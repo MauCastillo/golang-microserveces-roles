@@ -12,11 +12,13 @@ func TestHandleRequest(t *testing.T) {
 	c := require.New(t)
 
 	event := events.APIGatewayProxyRequest{QueryStringParameters: map[string]string{
-		"date": "2019-12-01", "day": "5",
+		"date": "2019-12-01", "day": "1",
 	}}
 
-	_, err := HandleRequest(context.Background(), event)
+	res, err := HandleRequest(context.Background(), event)
 	c.NoError(err)
+
+	c.Contains(res.Body, `"total":5717945`)
 }
 
 func TestHandleRequestError(t *testing.T) {

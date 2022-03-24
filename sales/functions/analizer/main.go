@@ -60,7 +60,7 @@ func rangeQuery(request events.APIGatewayProxyRequest) (*Response, error) {
 	days := request.QueryStringParameters[fieldDay]
 	res := NewResponse()
 
-	t, err := time.Parse(layoutISO, date)
+	startDate, err := time.Parse(layoutISO, date)
 	if err != nil {
 		return res, err
 	}
@@ -71,14 +71,14 @@ func rangeQuery(request events.APIGatewayProxyRequest) (*Response, error) {
 	}
 
 	for i := 0; i < rangeDays; i++ {
-		sales, err := requestGet(t.Format(layoutISO))
+		sales, err := requestGet(startDate.Format(layoutISO))
 		if err != nil {
 			continue
 		}
 
 		res.analizer(sales)
 
-		t.AddDate(0, 0, 1)
+		startDate = startDate.AddDate(0, 0, 1)
 	}
 
 	return res, nil
