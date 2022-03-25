@@ -17,21 +17,21 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "date",
-							"value": "2019-12-01",
+							"key": "",
+							"value": "",
 							"type": "text",
 							"disabled": true
 						},
 						{
-							"key": "day",
-							"value": "1",
+							"key": "",
+							"value": "",
 							"type": "text",
 							"disabled": true
 						}
 					]
 				},
 				"url": {
-					"raw": "https://tqscirqmnf.execute-api.us-west-1.amazonaws.com/staging/?date=2019-12-01&day=1",
+					"raw": "https://tqscirqmnf.execute-api.us-west-1.amazonaws.com/staging/?date=2019-12-01&day=5",
 					"protocol": "https",
 					"host": [
 						"tqscirqmnf",
@@ -51,7 +51,7 @@
 						},
 						{
 							"key": "day",
-							"value": "1"
+							"value": "5"
 						}
 					]
 				}
