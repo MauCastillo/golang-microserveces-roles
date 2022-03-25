@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -26,6 +27,7 @@ type users struct {
 
 const (
 	pathFileCSV        = "sample.csv"
+	pathOutput         = "output.json"
 	fieldRole          = "rol"
 	fieldUser          = "usuario"
 	fieldOrganizations = "organizacion"
@@ -104,6 +106,10 @@ func usersOrganizationToString(usersOrganization UsersOrganization) (string, err
 		return "", err
 	}
 
+	err = ioutil.WriteFile(pathOutput, organizer, 0644)
+	if err != nil {
+		return "", err
+	}
 	return string(organizer), nil
 }
 
