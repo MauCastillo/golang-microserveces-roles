@@ -26,21 +26,24 @@ type users struct {
 
 const (
 	pathFileCSV        = "sample.csv"
-	fieldRole          = 2
-	fieldUser          = 1
-	fieldOrganizations = 0
+	fieldRole          = "rol"
+	fieldUser          = "usuario"
+	fieldOrganizations = "organizacion"
 	maxRowItem         = 3
 )
 
 func createUsersOrganization(data [][]string) UsersOrganization {
 	organizations := map[string]users{}
 
+	labels := map[string]int{}
+
 	for index, organization := range data {
 		if index == 0 || len(organization) < maxRowItem {
+			labels = getLabel(organization)
 			continue
 		}
 
-		organizations = marshalDocument(organization, organizations)
+		organizations = marshalDocument(organization, organizations, labels)
 	}
 
 	usersOrganization := UsersOrganization{}
@@ -58,10 +61,10 @@ func createUsersOrganization(data [][]string) UsersOrganization {
 	return usersOrganization
 }
 
-func marshalDocument(organization []string, organizations map[string]users) map[string]users {
-	username := organization[fieldUser]
-	company := organization[fieldOrganizations]
-	userRole := organization[fieldRole]
+func marshalDocument(organization []string, organizations map[string]users, labels map[string]int) map[string]users {
+	username := organization[labels[fieldUser]]
+	company := organization[labels[fieldOrganizations]]
+	userRole := organization[labels[fieldRole]]
 
 	if user, ok := organizations[company]; ok {
 		if role, ok := user.userRole[username]; ok {
@@ -113,6 +116,16 @@ func buildJSON() (string, error) {
 	usersOrganization := createUsersOrganization(data)
 
 	return usersOrganizationToString(usersOrganization)
+}
+
+func getLabel(labelRow []string) map[string]int {
+	labels := make(map[string]int)
+
+	for index, value := range labelRow {
+		labels[value] = index
+	}
+
+	return labels
 }
 
 func main() {

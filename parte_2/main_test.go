@@ -19,3 +19,10 @@ func TestBuildJSON(t *testing.T) {
 
 	main()
 }
+
+func TestGetLabel(t *testing.T) {
+	c := require.New(t)
+
+	labelRow := getLabel([]string{"organizacion", "usuario", "rol"})
+	c.Len(labelRow, 3)
+}
