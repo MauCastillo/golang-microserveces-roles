@@ -79,10 +79,10 @@ func marshalDocument(organization []string, organizations map[string]users) map[
 	return organizations
 }
 
-func main() {
+func readFile() ([][]string, error) {
 	file, err := os.Open(pathFileCSV)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	defer file.Close()
@@ -90,15 +90,36 @@ func main() {
 	csvReader := csv.NewReader(file)
 	data, err := csvReader.ReadAll()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
+	}
+	return data, nil
+}
+
+func usersOrganizationToString(usersOrganization UsersOrganization) (string, error) {
+	organizer, err := json.MarshalIndent(usersOrganization, "", " ")
+	if err != nil {
+		return "", err
+	}
+
+	return string(organizer), nil
+}
+
+func buildJSON() (string, error) {
+	data, err := readFile()
+	if err != nil {
+		return "", err
 	}
 
 	usersOrganization := createUsersOrganization(data)
 
-	organizer, err := json.Marshal(usersOrganization)
+	return usersOrganizationToString(usersOrganization)
+}
+
+func main() {
+	document, err := buildJSON()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(string(organizer))
+	fmt.Println(document)
 }
